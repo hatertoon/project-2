@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, MapPin, Phone, Mail, Edit, Settings, Bell, FileText, Briefcase, Calendar, TrendingUp, Award } from 'lucide-react';
+import { User, MapPin, Phone, Mail, Edit, Settings, Bell, FileText, Briefcase, Calendar, TrendingUp, Award, Download, Building, Star, CheckCircle } from 'lucide-react';
 
 const UserDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -40,6 +40,64 @@ const UserDashboard = () => {
       status: 'ไม่ผ่านการคัดเลือก',
       appliedDate: '15 มกราคม 2025',
       statusColor: 'red',
+    },
+  ];
+
+  const verifiedJobs = [
+    {
+      id: 1,
+      jobTitle: 'พนักงานทำความสะอาด',
+      company: 'บริษัท สะอาดใส จำกัด',
+      completedDate: '15 มกราคม 2025',
+      duration: '7 วัน',
+      rating: 5,
+      certificate: 'cert_001.pdf',
+      feedback: 'ทำงานขยัน ตรงเวลา ทำความสะอาดได้อย่างละเอียด',
+      verified: true,
+    },
+    {
+      id: 2,
+      jobTitle: 'คนส่งอาหาร',
+      company: 'ร้านอาหารอร่อยมาก',
+      completedDate: '12 มกราคม 2025',
+      duration: '14 วัน',
+      rating: 5,
+      certificate: 'cert_002.pdf',
+      feedback: 'ส่งอาหารรวดเร็ว มีความรับผิดชอบสูง ลูกค้าประทับใจ',
+      verified: true,
+    },
+    {
+      id: 3,
+      jobTitle: 'แม่บ้าน',
+      company: 'บ้านคุณสมศรี',
+      completedDate: '8 มกราคม 2025',
+      duration: '30 วัน',
+      rating: 4,
+      certificate: 'cert_003.pdf',
+      feedback: 'ซื่อสัตย์ ทำงานดี แต่ควรพัฒนาทักษะการทำอาหารเพิ่มเติม',
+      verified: true,
+    },
+    {
+      id: 4,
+      jobTitle: 'พนักงานร้านกาแฟ',
+      company: 'Coffee Corner',
+      completedDate: '5 มกราคม 2025',
+      duration: '21 วัน',
+      rating: 5,
+      certificate: 'cert_004.pdf',
+      feedback: 'บุคลิกดี ยิ้มแย้ม ลูกค้าชื่นชอบ ทำงานเป็นทีมได้ดี',
+      verified: true,
+    },
+    {
+      id: 5,
+      jobTitle: 'คนขายของ',
+      company: 'ตลาดนัดสวนจตุจักร',
+      completedDate: '2 มกราคม 2025',
+      duration: '5 วัน',
+      rating: 4,
+      certificate: 'cert_005.pdf',
+      feedback: 'พูดเก่ง ขายของได้ดี อดทนต่อสภาพอากาศ',
+      verified: true,
     },
   ];
 
@@ -156,6 +214,11 @@ const UserDashboard = () => {
                   >
                     <tab.icon className="h-5 w-5 mr-3" />
                     {tab.name}
+                    {tab.id === 'certificates' && (
+                      <span className="ml-auto bg-primary-500 text-white text-xs px-2 py-1 rounded-full">
+                        {verifiedJobs.length}
+                      </span>
+                    )}
                   </button>
                 ))}
               </nav>
@@ -265,18 +328,144 @@ const UserDashboard = () => {
               {/* Certificates Tab */}
               {activeTab === 'certificates' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">ใบรับรองของฉัน</h2>
-                  <div className="text-center py-12">
-                    <Award className="h-24 w-24 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      ไปดูใบรับรองทั้งหมด
-                    </h3>
-                    <p className="text-gray-600 mb-6">
-                      คลิกที่นี่เพื่อดูใบรับรองที่คุณได้รับจากการทำงาน
-                    </p>
-                    <button className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200">
-                      ดูใบรับรองทั้งหมด
-                    </button>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">ใบรับรองของฉัน</h2>
+                    <div className="text-sm text-gray-600">
+                      ทั้งหมด {verifiedJobs.length} ใบรับรอง
+                    </div>
+                  </div>
+
+                  {/* Summary Stats */}
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                    <div className="bg-primary-50 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-primary-600">{verifiedJobs.length}</div>
+                      <div className="text-sm text-primary-700">ใบรับรองทั้งหมด</div>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-green-600">
+                        {(verifiedJobs.reduce((sum, job) => sum + job.rating, 0) / verifiedJobs.length).toFixed(1)}
+                      </div>
+                      <div className="text-sm text-green-700">คะแนนเฉลี่ย</div>
+                    </div>
+                    <div className="bg-blue-50 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-blue-600">
+                        {verifiedJobs.reduce((sum, job) => sum + parseInt(job.duration), 0)}
+                      </div>
+                      <div className="text-sm text-blue-700">วันทำงานรวม</div>
+                    </div>
+                    <div className="bg-yellow-50 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-yellow-600">
+                        {verifiedJobs.filter(job => job.rating === 5).length}
+                      </div>
+                      <div className="text-sm text-yellow-700">งาน 5 ดาว</div>
+                    </div>
+                  </div>
+
+                  {/* Verified Jobs List */}
+                  <div className="space-y-6">
+                    {verifiedJobs.map((job) => (
+                      <div
+                        key={job.id}
+                        className="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow duration-300"
+                      >
+                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+                          <div className="flex-1">
+                            {/* Job Header */}
+                            <div className="flex items-start justify-between mb-4">
+                              <div>
+                                <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
+                                  {job.jobTitle}
+                                  {job.verified && (
+                                    <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                      <CheckCircle className="h-3 w-3 mr-1" />
+                                      รับรองแล้ว
+                                    </span>
+                                  )}
+                                </h3>
+                                <div className="flex items-center text-gray-600 mb-2">
+                                  <Building className="h-4 w-4 mr-2" />
+                                  <span>{job.company}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    className={`h-5 w-5 ${
+                                      i < job.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                                    }`}
+                                  />
+                                ))}
+                                <span className="ml-2 text-sm text-gray-600">({job.rating}/5)</span>
+                              </div>
+                            </div>
+
+                            {/* Job Details */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                              <div className="flex items-center text-sm text-gray-600">
+                                <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                                เสร็จสิ้นเมื่อ: {job.completedDate}
+                              </div>
+                              <div className="flex items-center text-sm text-gray-600">
+                                <TrendingUp className="h-4 w-4 mr-2 text-gray-400" />
+                                ระยะเวลา: {job.duration}
+                              </div>
+                            </div>
+
+                            {/* Feedback */}
+                            <div className="mb-4">
+                              <h4 className="text-sm font-medium text-gray-900 mb-2">ความคิดเห็นจากนายจ้าง:</h4>
+                              <p className="text-gray-700 bg-gray-50 p-3 rounded-lg italic">
+                                "{job.feedback}"
+                              </p>
+                            </div>
+
+                            {/* Certificate Section */}
+                            <div className="bg-primary-50 rounded-lg p-4">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                  <Award className="h-5 w-5 text-primary-600 mr-2" />
+                                  <div>
+                                    <div className="text-sm font-medium text-primary-900">
+                                      ใบรับรองการทำงาน
+                                    </div>
+                                    <div className="text-xs text-primary-700">
+                                      {job.certificate}
+                                    </div>
+                                  </div>
+                                </div>
+                                <button className="flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-200 text-sm">
+                                  <Download className="h-4 w-4 mr-2" />
+                                  ดาวน์โหลด
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Certificate Benefits */}
+                  <div className="mt-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl p-6 text-white">
+                    <div className="text-center">
+                      <Award className="h-10 w-10 mx-auto mb-3" />
+                      <h3 className="text-lg font-bold mb-3">ประโยชน์ของใบรับรอง</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div className="text-center">
+                          <CheckCircle className="h-6 w-6 mx-auto mb-2 opacity-80" />
+                          <p className="opacity-90">พิสูจน์ประสบการณ์การทำงาน</p>
+                        </div>
+                        <div className="text-center">
+                          <Star className="h-6 w-6 mx-auto mb-2 opacity-80" />
+                          <p className="opacity-90">เพิ่มความน่าเชื่อถือ</p>
+                        </div>
+                        <div className="text-center">
+                          <TrendingUp className="h-6 w-6 mx-auto mb-2 opacity-80" />
+                          <p className="opacity-90">โอกาสงานดีขึ้น</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
